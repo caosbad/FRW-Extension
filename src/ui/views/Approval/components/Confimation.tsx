@@ -150,28 +150,33 @@ const Confimation = ({ params: { icon, origin, tabId, type } }: ConnectProps) =>
   };
 
   const sendAuthzToFCL = async () => {
+    setIsLoading(true);
     console.log('sendAuthzToFCL ==>', signable);
     if (!signable) {
       return;
     }
-    setApproval(true);
+
     const signedMessage = await wallet.signMessage(signable.message);
 
     // console.log('signedMessage ->', opener, lilicoEnabled)
     // console.log('signedMessage ->', signedMessage)
 
     if (opener) {
-      console.log(signable,'signable')
+      console.log(signable, 'signable');
       sendSignature(signable, signedMessage);
       const value = await sessionStorage.getItem('pendingRefBlockId');
-      // console.log('pendingRefBlockId ->', value);
+      console.log('pendingRefBlockId ->', value);
       if (value !== null) {
         return;
       }
       sessionStorage.setItem('pendingRefBlockId', signable.voucher.refBlock);
-
+      setApproval(true);
+      resolveApproval();
+      // todo state control
       if (lilicoEnabled) {
+        console.log(lilicoEnabled, 'lilicoEnabled');
         chrome.tabs.sendMessage(opener, { type: 'FCL:VIEW:READY' });
+
         // const tx = signable.voucher
         // tx.payloadSigs[0].sig = signedMessage
         // const message = sdk.encodeTransactionEnvelope(tx)

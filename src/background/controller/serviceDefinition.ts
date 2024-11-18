@@ -70,7 +70,7 @@ export async function httpPayerServiceDefinition(address, keyId, type, network, 
     uid: `fcw#${type}`,
     method: 'HTTP/POST',
     network: network || 'unknown',
-    endpoint: 'http://127.0.0.1:5001/lilico-dev/us-central1/payer',
+    endpoint: `${getFirbaseFunctionUrl()}/payer`,
     identity: {
       address: address,
       keyId: keyId,
@@ -97,7 +97,7 @@ export async function httpProposerServiceDefinition(address, keyId, type, networ
     uid: `fcw#${type}`,
     method: 'HTTP/POST',
     network: network || 'unknown',
-    endpoint: 'http://127.0.0.1:5001/lilico-dev/us-central1/proposer',
+    endpoint: `${getFirbaseFunctionUrl()}/proposer`,
     identity: {
       address: address,
       keyId: keyId,
@@ -110,7 +110,6 @@ export async function httpProposerServiceDefinition(address, keyId, type, networ
           },
   };
 
-  console.log(definition, 'proposer definition ============================!!!!');
   return definition;
 }
 
